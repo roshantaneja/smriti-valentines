@@ -1,6 +1,8 @@
 import { getPhotos } from "@/lib/photos";
 import { FloatingPhotos } from "@/components/FloatingPhotos";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const photos = await getPhotos();
 

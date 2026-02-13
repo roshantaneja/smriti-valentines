@@ -19,6 +19,11 @@ export async function getDrivePhotos(): Promise<PhotoSource[]> {
   const privateKey = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY;
 
   if (!folderId || !clientEmail || !privateKey) {
+    if (process.env.NODE_ENV === "development") {
+      console.warn(
+        "[Drive] Missing env vars: GOOGLE_DRIVE_FOLDER_ID, GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL, GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY"
+      );
+    }
     return [];
   }
 
@@ -60,7 +65,10 @@ export async function getDrivePhotos(): Promise<PhotoSource[]> {
           alt: f.name ?? f.id ?? "Photo",
         };
       });
-  } catch {
+  } catch (err) {
+    if (process.env.NODE_ENV === "development") {
+      console.error("[Drive] Failed to fetch photos:", err);
+    }
     return [];
   }
 }
