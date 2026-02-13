@@ -34,6 +34,11 @@ yarn-error.log*
 .env*
 !.env.example
 
+# secrets
+secrets.txt
+secrets/
+*-*-*.json
+
 # vercel
 .vercel
 
