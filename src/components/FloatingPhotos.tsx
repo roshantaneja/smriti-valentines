@@ -150,15 +150,24 @@ export function FloatingPhotos({ photos }: FloatingPhotosProps) {
   const photoStyles = useMemo(() => {
     if (photos.length === 0) return [];
     const seed = hashString(photos.map((p) => p.src).join(","));
+    const cols = 6;
+    const rows = Math.ceil(photos.length / cols) || 1;
     return photos.map((photo, i) => {
       const r = (o: number) => seededRandom(seed + i * 7, o);
+      const col = i % cols;
+      const row = Math.floor(i / cols);
+      // Grid layout with random offset for organic feel - ensures even spread
+      const cellWidth = 92 / cols;
+      const cellHeight = 88 / rows;
+      const left = Math.min(88, (col * cellWidth) + r(1) * (cellWidth * 0.6) + 3);
+      const top = Math.min(85, (row * cellHeight) + r(2) * (cellHeight * 0.6) + 3);
       return {
         src: photo.src,
         alt: photo.alt,
-        left: 5 + r(1) * 90,
-        top: 5 + r(2) * 90,
-        size: 80 + r(3) * 120,
-        rotation: -15 + r(4) * 30,
+        left,
+        top,
+        size: 120 + r(3) * 100,
+        rotation: -12 + r(4) * 24,
         animationDelay: r(5) * 5,
         animationDuration: 8 + r(6) * 6,
       };
@@ -234,7 +243,7 @@ export function FloatingPhotos({ photos }: FloatingPhotosProps) {
         return (
           <div
             key={style.src}
-            className={`absolute rounded-xl overflow-hidden shadow-lg ring-2 ring-white/40 transition-opacity duration-300 ${
+            className={`absolute rounded-xl overflow-hidden shadow-xl ring-2 ring-white/50 transition-opacity duration-300 ${
               isLoading ? "opacity-0 pointer-events-none" : ""
             }`}
             style={{
