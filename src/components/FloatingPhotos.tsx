@@ -160,7 +160,6 @@ export function FloatingPhotos({ photos }: FloatingPhotosProps) {
 
   const poolRef = useRef<PhotoItem[]>([]);
   const rotationKeyRef = useRef(0);
-  const nextSlotToReplaceRef = useRef(0);
 
   const slotStyles = useMemo((): SlotStyle[] => {
     const cols = 6;
@@ -188,18 +187,16 @@ export function FloatingPhotos({ photos }: FloatingPhotosProps) {
   const [displayedSlots, setDisplayedSlots] = useState<{ photo: PhotoItem; key: number }[]>(() => {
     if (photos.length === 0) return [];
     const n = Math.min(MAX_SLOTS, photos.length);
-    const shuffled = shuffle(photos, 42);
-    poolRef.current = shuffled.slice(n);
-    return shuffled.slice(0, n).map((photo, i) => ({ photo, key: i }));
+    poolRef.current = photos.slice(n);
+    return photos.slice(0, n).map((photo, i) => ({ photo, key: i }));
   });
 
   useEffect(() => {
     if (photos.length === 0) return;
     if (displayedSlots.length === 0) {
       const n = Math.min(MAX_SLOTS, photos.length);
-      const shuffled = shuffle(photos, 42);
-      poolRef.current = shuffled.slice(n);
-      setDisplayedSlots(shuffled.slice(0, n).map((photo, i) => ({ photo, key: i })));
+      poolRef.current = photos.slice(n);
+      setDisplayedSlots(photos.slice(0, n).map((photo, i) => ({ photo, key: i })));
     }
   }, [photos]);
 
@@ -217,9 +214,7 @@ export function FloatingPhotos({ photos }: FloatingPhotosProps) {
         }
         if (pool.length === 0) return prev;
 
-        const slotIdx = nextSlotToReplaceRef.current % prev.length;
-        nextSlotToReplaceRef.current += 1;
-
+        const slotIdx = Math.floor(Math.random() * prev.length);
         const newPhoto = pool[0];
         poolRef.current = pool.slice(1);
 
