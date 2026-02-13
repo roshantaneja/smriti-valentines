@@ -39,3 +39,12 @@ body {
     transform: translate(-4px, -4px);
   }
 }
+
+@keyframes photo-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

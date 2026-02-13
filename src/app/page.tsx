@@ -9,13 +9,10 @@ export default async function Home() {
       <FloatingPhotos photos={photos} />
 
       <main className="max-w-lg text-center space-y-6 relative z-10">
-        <div className="text-6xl">💕</div>
-        <h1 className="text-4xl font-semibold tracking-tight text-rose-900 dark:text-rose-100">
-          Happy Valentines
+        <div className="text-6xl">💕💕💕</div>
+        <h1 className="text-4xl font-semibold tracking-tight text-rose-900 dark:text-rose-100 backdrop-blur-sm bg-white/50 p-4 rounded-lg">
+          Happy Valentines!
         </h1>
-        <p className="text-lg text-rose-700 dark:text-rose-300">
-          A little something special, just for you
-        </p>
       </main>
     </div>
   );
