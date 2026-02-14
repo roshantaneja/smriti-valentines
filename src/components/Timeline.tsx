@@ -8,8 +8,9 @@ interface TimelineProps {
 }
 
 function formatDate(isoDate: string): string {
-  const d = new Date(isoDate);
-  return d.toLocaleDateString("en-US", {
+  const [y, m, d] = isoDate.split("-").map(Number);
+  const date = new Date(y, m - 1, d);
+  return date.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -44,7 +45,7 @@ export function Timeline({ events }: TimelineProps) {
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
     >
-      <div className="max-w-xl mx-auto">
+      <div className="max-w-xl mx-auto backdrop-blur-md bg-white/40 dark:bg-white/10 rounded-2xl p-8 shadow-lg border border-rose-200/50 dark:border-rose-800/50">
         <h2 className="text-2xl font-semibold text-rose-900 dark:text-rose-100 mb-12 text-center">
           Our story
         </h2>
@@ -54,7 +55,7 @@ export function Timeline({ events }: TimelineProps) {
 
           <ul className="space-y-8">
             {events.map((event) => (
-              <li key={`${event.date}-${event.title}`} className="relative flex gap-6 pl-4">
+              <li key={`${event.date}-${event.title}`} className="relative flex gap-6 pl-12">
                 <div className="absolute left-[15px] w-8 h-8 rounded-full bg-rose-400 dark:bg-rose-600 ring-4 ring-white dark:ring-rose-950 shrink-0 -translate-x-1/2" />
 
                 <div className="pt-0.5 pl-2 flex-1 min-w-0">

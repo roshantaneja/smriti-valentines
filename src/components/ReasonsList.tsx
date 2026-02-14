@@ -40,7 +40,7 @@ export function ReasonsList({ reasons }: ReasonsListProps) {
           className="w-full text-center group focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-offset-2 rounded-2xl"
           aria-expanded={expanded}
         >
-          <h2 className="text-2xl font-semibold text-rose-900 dark:text-rose-100 mb-4 flex items-center justify-center gap-2">
+          <h2 className="text-2xl font-semibold text-rose-900 dark:text-rose-100 mb-4 flex items-center justify-center gap-2 backdrop-blur-sm bg-white/50 p-4 rounded-lg">
             <span
               className={`inline-block transition-transform duration-300 ${
                 expanded ? "rotate-180" : ""
@@ -57,7 +57,7 @@ export function ReasonsList({ reasons }: ReasonsListProps) {
               ❤️
             </span>
           </h2>
-          <p className="text-rose-600 dark:text-rose-300 text-sm">
+          <p className="text-rose-600 dark:text-rose-300 text-sm backdrop-blur-sm bg-white/50 p-4 rounded-lg">
             {expanded ? "Click to collapse" : "Click to open"}
           </p>
         </button>
