@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { PhotoLightbox } from "./PhotoLightbox";
 
 const MAX_SLOTS = 50;
 const ROTATE_INTERVAL_MS = 2500;
@@ -121,15 +122,6 @@ interface SlotStyle {
 const REPEL_RADIUS = 200;
 const REPEL_STRENGTH = 30;
 
-function hashString(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash = hash & hash;
-  }
-  return Math.abs(hash) / 2147483647;
-}
-
 function seededRandom(seed: number, offset: number): number {
   const x = Math.sin(seed * 9999 + offset * 12345) * 10000;
   return x - Math.floor(x);
@@ -151,6 +143,7 @@ function shuffle<T>(array: T[], seed: number): T[] {
 
 export function FloatingPhotos({ photos }: FloatingPhotosProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<PhotoItem | null>(null);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [cursorOffsets, setCursorOffsets] = useState<Map<number, { x: number; y: number }>>(new Map());
   const [failedSlots, setFailedSlots] = useState<Set<number>>(new Set());
@@ -198,7 +191,7 @@ export function FloatingPhotos({ photos }: FloatingPhotosProps) {
       poolRef.current = photos.slice(n);
       setDisplayedSlots(photos.slice(0, n).map((photo, i) => ({ photo, key: i })));
     }
-  }, [photos]);
+  }, [photos, displayedSlots.length]);
 
   useEffect(() => {
     if (photos.length <= MAX_SLOTS) return;
@@ -297,30 +290,41 @@ export function FloatingPhotos({ photos }: FloatingPhotosProps) {
   if (photos.length === 0 || displayedSlots.length === 0) return null;
 
   return (
-    <div
-      ref={containerRef}
-      className="fixed inset-0 overflow-hidden pointer-events-none select-none z-0"
-      aria-hidden
-    >
-      {displayedSlots.map((slot, i) => {
-        if (failedSlots.has(i)) return null;
-        const style = slotStyles[i];
-        const offset = cursorOffsets.get(i) ?? { x: 0, y: 0 };
-        const isLoading = loadingSlots.has(i);
-        return (
-          <div
-            key={`${i}-${slot.key}`}
-            className={`absolute rounded-xl overflow-hidden shadow-xl ring-2 ring-white/50 transition-opacity duration-300 ${
-              isLoading ? "opacity-0 pointer-events-none" : ""
-            }`}
-            style={{
-              left: `${style.left}%`,
-              top: `${style.top}%`,
-              width: style.size,
-              height: style.size,
-              transform: `rotate(${style.rotation}deg) translate(${offset.x}px, ${offset.y}px)`,
-            }}
-          >
+    <>
+      <div
+        ref={containerRef}
+        className="fixed inset-0 overflow-hidden pointer-events-none select-none z-0"
+        aria-hidden
+      >
+        {displayedSlots.map((slot, i) => {
+          if (failedSlots.has(i)) return null;
+          const style = slotStyles[i];
+          const offset = cursorOffsets.get(i) ?? { x: 0, y: 0 };
+          const isLoading = loadingSlots.has(i);
+          return (
+            <div
+              key={`${i}-${slot.key}`}
+              className={`absolute rounded-xl overflow-hidden shadow-xl ring-2 ring-white/50 transition-opacity duration-300 cursor-pointer pointer-events-auto hover:ring-rose-400 hover:scale-105 hover:z-10 ${
+                isLoading ? "opacity-0 pointer-events-none" : ""
+              }`}
+              style={{
+                left: `${style.left}%`,
+                top: `${style.top}%`,
+                width: style.size,
+                height: style.size,
+                transform: `rotate(${style.rotation}deg) translate(${offset.x}px, ${offset.y}px)`,
+              }}
+              onClick={() => !loadingSlots.has(i) && setSelectedPhoto(slot.photo)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if ((e.key === "Enter" || e.key === " ") && !loadingSlots.has(i)) {
+                  e.preventDefault();
+                  setSelectedPhoto(slot.photo);
+                }
+              }}
+              aria-label={`View photo: ${slot.photo.alt}`}
+            >
             <div
               className="w-full h-full"
               style={{
@@ -346,6 +350,14 @@ export function FloatingPhotos({ photos }: FloatingPhotosProps) {
           </div>
         );
       })}
-    </div>
+      </div>
+
+      {selectedPhoto && (
+        <PhotoLightbox
+          photo={selectedPhoto}
+          onClose={() => setSelectedPhoto(null)}
+        />
+      )}
+    </>
   );
 }
