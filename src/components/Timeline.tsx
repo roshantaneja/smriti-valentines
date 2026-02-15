@@ -45,7 +45,7 @@ export function Timeline({ events }: TimelineProps) {
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
     >
-      <div className="max-w-xl mx-auto backdrop-blur-md bg-white/40 dark:bg-white/10 rounded-2xl p-8 shadow-lg border border-rose-200/50 dark:border-rose-800/50">
+      <div className="max-w-xl mx-auto backdrop-blur-md bg-[linear-gradient(rgba(0,0,0,0.12),rgba(0,0,0,0.12)),rgba(255,255,255,0.65)] dark:bg-rose-950/50 rounded-2xl p-8 shadow-lg border border-rose-200/50 dark:border-rose-800/50">
         <h2 className="text-2xl font-semibold text-rose-900 dark:text-rose-100 mb-12 text-center">
           Our story
         </h2>

@@ -40,7 +40,7 @@ export function ReasonsList({ reasons }: ReasonsListProps) {
           className="w-full text-center group focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-offset-2 rounded-2xl"
           aria-expanded={expanded}
         >
-          <h2 className="text-2xl font-semibold text-rose-900 dark:text-rose-100 mb-4 flex items-center justify-center gap-2 backdrop-blur-sm bg-white/50 p-4 rounded-lg">
+          <h2 className="text-2xl font-semibold text-rose-900 dark:text-rose-100 mb-4 flex items-center justify-center gap-2 backdrop-blur-sm bg-[linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1)),rgba(255,255,255,0.65)] dark:bg-rose-950/50 p-4 rounded-lg">
             <span
               className={`inline-block transition-transform duration-300 ${
                 expanded ? "rotate-180" : ""
@@ -57,7 +57,7 @@ export function ReasonsList({ reasons }: ReasonsListProps) {
               ❤️
             </span>
           </h2>
-          <p className="text-rose-600 dark:text-rose-300 text-sm backdrop-blur-sm bg-white/50 p-4 rounded-lg">
+          <p className="text-rose-600 dark:text-rose-300 text-sm backdrop-blur-sm bg-[linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1)),rgba(255,255,255,0.65)] dark:bg-rose-950/50 p-4 rounded-lg">
             {expanded ? "Click to collapse" : "Click to open"}
           </p>
         </button>
@@ -71,7 +71,7 @@ export function ReasonsList({ reasons }: ReasonsListProps) {
             {reasons.map((reason, i) => (
               <li
                 key={reason}
-                className="backdrop-blur-sm bg-white/50 dark:bg-rose-950/30 p-4 rounded-xl border border-rose-200/50 dark:border-rose-800/50 animate-reason-reveal"
+                className="backdrop-blur-sm bg-[linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1)),rgba(255,255,255,0.65)] dark:bg-rose-950/40 p-4 rounded-xl border border-rose-200/50 dark:border-rose-800/50 animate-reason-reveal"
                 style={{
                   animationDelay: `${i * 80}ms`,
                   animationFillMode: "both",

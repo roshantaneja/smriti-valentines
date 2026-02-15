@@ -17,7 +17,7 @@ export function DateCounter({ startDate }: DateCounterProps) {
   const days = getDaysTogether(startDate);
 
   return (
-    <p className="text-lg text-rose-700 dark:text-rose-200 backdrop-blur-sm bg-white/40 px-4 py-2 rounded-lg">
+    <p className="text-lg text-rose-700 dark:text-rose-200 backdrop-blur-sm bg-[linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1)),rgba(255,255,255,0.6)] dark:bg-rose-950/40 px-4 py-2 rounded-lg">
       {days} days together
     </p>
   );
