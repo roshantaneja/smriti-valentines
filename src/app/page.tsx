@@ -38,7 +38,7 @@ export default async function Home() {
             <EasterEgg secretMessage={config.secretMessage}>
               <div className="cursor-default">
                 <div className="text-6xl">💕💕💕</div>
-                <h1 className="text-4xl font-semibold tracking-tight text-rose-900 dark:text-rose-100 backdrop-blur-sm bg-[linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1)),rgba(255,255,255,0.65)] dark:bg-rose-950/50 p-4 rounded-lg">
+                <h1 className="text-4xl font-semibold tracking-tight text-rose-900 dark:text-rose-100 backdrop-blur-sm bg-[linear-gradient(rgba(255,255,255,0.95),rgba(255,255,255,0.9))] dark:bg-[linear-gradient(rgba(255,255,255,0.18),rgba(255,255,255,0.12))] p-4 rounded-lg">
                   Happy Valentines Day, Smriti!
                 </h1>
               </div>

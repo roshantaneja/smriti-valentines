@@ -95,7 +95,7 @@ export function EasterEgg({ secretMessage, children }: EasterEggProps) {
           aria-label="Secret message"
         >
           <div
-            className="max-w-md w-full backdrop-blur-md bg-rose-50 dark:bg-rose-950/95 p-8 rounded-2xl shadow-2xl border-2 border-rose-300 dark:border-rose-700"
+            className="max-w-md w-full backdrop-blur-md bg-white/95 dark:bg-[linear-gradient(rgba(255,255,255,0.25),rgba(255,255,255,0.2))] p-8 rounded-2xl shadow-2xl border-2 border-rose-300 dark:border-rose-600"
             onClick={(e) => e.stopPropagation()}
           >
             <p className="text-rose-900 dark:text-rose-100 text-lg text-center font-serif">

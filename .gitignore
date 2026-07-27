@@ -39,6 +39,9 @@ secrets.txt
 secrets/
 *-*-*.json
 
+# local staging area for face-calibration photos (never committed)
+/reference-photos/
+
 # vercel
 .vercel
 
