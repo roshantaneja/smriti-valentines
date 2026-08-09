@@ -29,7 +29,7 @@ export function RateAnalysis({ previewUrl }: RateAnalysisProps) {
   return (
     <div className="space-y-6">
       {previewUrl && (
-        <div className="mx-auto w-32 h-32 rounded-xl overflow-hidden border border-rose-200/50 dark:border-rose-700/40 shadow-md">
+        <div className="mx-auto w-32 h-32 rounded-xl overflow-hidden border border-rose-200 dark:border-rose-800 shadow-md">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={previewUrl}
@@ -46,7 +46,7 @@ export function RateAnalysis({ previewUrl }: RateAnalysisProps) {
         >
           {ANALYSIS_STEPS[stepIndex].label}
         </p>
-        <div className="h-2 w-full rounded-full bg-rose-100 dark:bg-rose-900/50 overflow-hidden">
+        <div className="h-2 w-full rounded-full bg-rose-100 dark:bg-rose-900 overflow-hidden">
           <div
             className="h-full rounded-full bg-gradient-to-r from-rose-500 to-pink-500 transition-all ease-linear"
             style={{

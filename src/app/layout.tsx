@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
@@ -16,6 +16,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Smriti Valentines",
   description: "A little something special for you 💕",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#ffe4e6",
 };
 
 export default function RootLayout({

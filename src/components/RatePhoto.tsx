@@ -74,7 +74,7 @@ export function RatePhoto() {
   );
 
   return (
-    <div className="backdrop-blur-sm bg-[linear-gradient(rgba(255,255,255,0.95),rgba(255,255,255,0.9))] dark:bg-[linear-gradient(rgba(255,255,255,0.18),rgba(255,255,255,0.12))] p-8 rounded-2xl shadow-xl border border-rose-200/50 dark:border-rose-700/40">
+    <div className="bg-white dark:bg-rose-950 p-8 rounded-2xl shadow-xl border border-rose-200 dark:border-rose-800">
       {phase === "idle" && (
         <div
           role="button"
@@ -91,7 +91,7 @@ export function RatePhoto() {
           onDrop={onDrop}
           className={`cursor-pointer rounded-xl border-2 border-dashed p-10 transition-colors ${
             dragging
-              ? "border-rose-500 bg-rose-100/60 dark:bg-rose-900/30"
+              ? "border-rose-500 bg-rose-100 dark:bg-rose-900"
               : "border-rose-300 dark:border-rose-700 hover:border-rose-400 dark:hover:border-rose-600"
           }`}
         >

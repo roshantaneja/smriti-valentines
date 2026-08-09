@@ -5,6 +5,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { PhotoLightbox } from "./PhotoLightbox";
 
 const MAX_SLOTS = 50;
+const MOBILE_MAX_SLOTS = 24;
+const MOBILE_BREAKPOINT_PX = 640;
 const ROTATE_INTERVAL_MS = 2500;
 
 function PhotoImage({
@@ -27,14 +29,18 @@ function PhotoImage({
   );
   const [failed, setFailed] = useState(false);
   const objectUrlRef = useRef<string | null>(null);
+  const onLoadFailedRef = useRef(onLoadFailed);
+  const onLoadingChangeRef = useRef(onLoadingChange);
+  onLoadFailedRef.current = onLoadFailed;
+  onLoadingChangeRef.current = onLoadingChange;
 
   useEffect(() => {
     if (!src.toLowerCase().endsWith(".heic")) {
       setDisplaySrc(src);
-      onLoadingChange?.(false);
+      onLoadingChangeRef.current?.(false);
       return;
     }
-    onLoadingChange?.(true);
+    onLoadingChangeRef.current?.(true);
     let cancelled = false;
     Promise.all([
       fetch(src).then((r) => r.blob()),
@@ -49,14 +55,14 @@ function PhotoImage({
           const url = URL.createObjectURL(jpegBlob);
           objectUrlRef.current = url;
           setDisplaySrc(url);
-          onLoadingChange?.(false);
+          onLoadingChangeRef.current?.(false);
         }
       })
       .catch(() => {
         if (!cancelled) {
           setFailed(true);
-          onLoadingChange?.(false);
-          onLoadFailed?.();
+          onLoadingChangeRef.current?.(false);
+          onLoadFailedRef.current?.();
         }
       });
 
@@ -67,7 +73,7 @@ function PhotoImage({
         objectUrlRef.current = null;
       }
     };
-  }, [src, onLoadFailed, onLoadingChange]);
+  }, [src]);
 
   if (failed) return null;
 
@@ -154,12 +160,18 @@ export function FloatingPhotos({ photos }: FloatingPhotosProps) {
   const poolRef = useRef<PhotoItem[]>([]);
   const rotationKeyRef = useRef(0);
 
+  // Start at MAX_SLOTS so server and client render the same markup, then cap
+  // to MOBILE_MAX_SLOTS after mount on small screens (see effect below).
+  const [maxSlots, setMaxSlots] = useState(MAX_SLOTS);
+
+  // The grid must span the full viewport for however many slots are active —
+  // sizing it to MAX_SLOTS would leave the bottom rows empty once capped.
   const slotStyles = useMemo((): SlotStyle[] => {
     const cols = 6;
-    const rows = Math.ceil(MAX_SLOTS / cols);
+    const rows = Math.ceil(maxSlots / cols);
     const seed = 12345;
     const styles: SlotStyle[] = [];
-    for (let i = 0; i < MAX_SLOTS; i++) {
+    for (let i = 0; i < maxSlots; i++) {
       const r = (o: number) => seededRandom(seed + i * 7, o);
       const col = i % cols;
       const row = Math.floor(i / cols);
@@ -175,7 +187,7 @@ export function FloatingPhotos({ photos }: FloatingPhotosProps) {
       });
     }
     return styles;
-  }, []);
+  }, [maxSlots]);
 
   const [displayedSlots, setDisplayedSlots] = useState<{ photo: PhotoItem; key: number }[]>(() => {
     if (photos.length === 0) return [];
@@ -184,17 +196,38 @@ export function FloatingPhotos({ photos }: FloatingPhotosProps) {
     return photos.slice(0, n).map((photo, i) => ({ photo, key: i }));
   });
 
+  // On small viewports, reduce the number of rendered slots to lighten the
+  // rendering load. Excess photos are returned to the pool so rotation can
+  // still cycle through them. Guarded by a ref so the pool is only credited
+  // once even if React invokes the updater twice (StrictMode).
+  const didCapSlotsRef = useRef(false);
+  useEffect(() => {
+    if (window.innerWidth >= MOBILE_BREAKPOINT_PX) return;
+    setMaxSlots(MOBILE_MAX_SLOTS);
+    setDisplayedSlots((prev) => {
+      if (prev.length <= MOBILE_MAX_SLOTS) return prev;
+      if (!didCapSlotsRef.current) {
+        didCapSlotsRef.current = true;
+        poolRef.current = [
+          ...prev.slice(MOBILE_MAX_SLOTS).map((s) => s.photo),
+          ...poolRef.current,
+        ];
+      }
+      return prev.slice(0, MOBILE_MAX_SLOTS);
+    });
+  }, []);
+
   useEffect(() => {
     if (photos.length === 0) return;
     if (displayedSlots.length === 0) {
-      const n = Math.min(MAX_SLOTS, photos.length);
+      const n = Math.min(maxSlots, photos.length);
       poolRef.current = photos.slice(n);
       setDisplayedSlots(photos.slice(0, n).map((photo, i) => ({ photo, key: i })));
     }
-  }, [photos, displayedSlots.length]);
+  }, [photos, displayedSlots.length, maxSlots]);
 
   useEffect(() => {
-    if (photos.length <= MAX_SLOTS) return;
+    if (photos.length <= maxSlots) return;
 
     const interval = setInterval(() => {
       setDisplayedSlots((prev) => {
@@ -218,7 +251,7 @@ export function FloatingPhotos({ photos }: FloatingPhotosProps) {
     }, ROTATE_INTERVAL_MS);
 
     return () => clearInterval(interval);
-  }, [photos]);
+  }, [photos, maxSlots]);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     setMouse({ x: e.clientX, y: e.clientY });
@@ -231,6 +264,10 @@ export function FloatingPhotos({ photos }: FloatingPhotosProps) {
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+
+    // Touch-only devices have no cursor, so the repel effect can never fire.
+    // Skip the rAF loop and mousemove listener entirely to save battery.
+    if (window.matchMedia("(hover: none)").matches) return;
 
     let rafId: number;
     let lastUpdate = 0;
@@ -304,7 +341,7 @@ export function FloatingPhotos({ photos }: FloatingPhotosProps) {
           return (
             <div
               key={`${i}-${slot.key}`}
-              className={`absolute rounded-xl overflow-hidden shadow-xl ring-2 ring-white/50 transition-opacity duration-300 cursor-pointer pointer-events-auto hover:ring-rose-400 hover:scale-105 hover:z-10 ${
+              className={`absolute rounded-xl overflow-hidden shadow-xl ring-2 ring-white transition-opacity duration-300 cursor-pointer pointer-events-auto hover:ring-rose-400 hover:scale-105 hover:z-10 ${
                 isLoading ? "opacity-0 pointer-events-none" : ""
               }`}
               style={{
@@ -336,9 +373,15 @@ export function FloatingPhotos({ photos }: FloatingPhotosProps) {
                 alt={slot.photo.alt}
                 size={style.size}
                 className="object-cover w-full h-full"
-                onLoadFailed={() => setFailedSlots((prev) => new Set(prev).add(i))}
+                onLoadFailed={() =>
+                  setFailedSlots((prev) => {
+                    if (prev.has(i)) return prev;
+                    return new Set(prev).add(i);
+                  })
+                }
                 onLoadingChange={(loading) =>
                   setLoadingSlots((prev) => {
+                    if (prev.has(i) === loading) return prev;
                     const next = new Set(prev);
                     if (loading) next.add(i);
                     else next.delete(i);

@@ -101,7 +101,7 @@ export function RateCalibrate() {
   }, [accepted]);
 
   return (
-    <div className="backdrop-blur-sm bg-[linear-gradient(rgba(255,255,255,0.95),rgba(255,255,255,0.9))] dark:bg-[linear-gradient(rgba(255,255,255,0.18),rgba(255,255,255,0.12))] p-8 rounded-2xl shadow-xl border border-rose-200/50 dark:border-rose-700/40 space-y-6">
+    <div className="bg-white dark:bg-rose-950 p-8 rounded-2xl shadow-xl border border-rose-200 dark:border-rose-800 space-y-6">
       <div
         role="button"
         tabIndex={0}
@@ -140,9 +140,9 @@ export function RateCalibrate() {
           {entries.map((entry) => (
             <li
               key={entry.id}
-              className="flex items-center gap-3 rounded-lg border border-rose-200/50 dark:border-rose-700/40 p-2"
+              className="flex items-center gap-3 rounded-lg border border-rose-200 dark:border-rose-800 p-2"
             >
-              <div className="w-12 h-12 rounded-md overflow-hidden bg-rose-100 dark:bg-rose-900/40 shrink-0">
+              <div className="w-12 h-12 rounded-md overflow-hidden bg-rose-100 dark:bg-rose-900 shrink-0">
                 {entry.thumbUrl && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -165,7 +165,7 @@ export function RateCalibrate() {
       )}
 
       {stats && (
-        <div className="rounded-lg bg-rose-50 dark:bg-rose-900/30 p-4 text-sm text-rose-800 dark:text-rose-200 text-left space-y-1">
+        <div className="rounded-lg bg-rose-50 dark:bg-rose-900 p-4 text-sm text-rose-800 dark:text-rose-200 text-left space-y-1">
           <p className="font-medium">
             Pairwise distances across {accepted.length} accepted photos
           </p>

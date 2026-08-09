@@ -88,14 +88,14 @@ export function EasterEgg({ secretMessage, children }: EasterEggProps) {
 
       {revealed && secretMessage && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950"
           onClick={closeModal}
           role="dialog"
           aria-modal
           aria-label="Secret message"
         >
           <div
-            className="max-w-md w-full backdrop-blur-md bg-white/95 dark:bg-[linear-gradient(rgba(255,255,255,0.25),rgba(255,255,255,0.2))] p-8 rounded-2xl shadow-2xl border-2 border-rose-300 dark:border-rose-600"
+            className="max-w-md w-full bg-white dark:bg-rose-950 p-8 rounded-2xl shadow-2xl border-2 border-rose-300 dark:border-rose-600"
             onClick={(e) => e.stopPropagation()}
           >
             <p className="text-rose-900 dark:text-rose-100 text-lg text-center font-serif">

@@ -37,7 +37,7 @@ export function LoveLetter({ content }: LoveLetterProps) {
         <h2 className="text-2xl font-semibold text-rose-900 dark:text-rose-100 mb-6 text-center">
           A letter for you
         </h2>
-        <div className="backdrop-blur-sm bg-[linear-gradient(rgba(255,255,255,0.95),rgba(255,255,255,0.9))] dark:bg-[linear-gradient(rgba(255,255,255,0.18),rgba(255,255,255,0.12))] p-8 rounded-2xl shadow-xl border border-rose-200/50 dark:border-rose-700/40">
+        <div className="bg-white dark:bg-rose-950 p-8 rounded-2xl shadow-xl border border-rose-200 dark:border-rose-800">
           <p className="text-rose-800 dark:text-rose-200 leading-relaxed whitespace-pre-line font-serif text-lg">
             {content}
           </p>

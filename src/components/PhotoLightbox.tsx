@@ -27,7 +27,7 @@ export function PhotoLightbox({ photo, onClose }: PhotoLightboxProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 bg-neutral-950 flex items-center justify-center p-4"
       onClick={onClose}
       role="dialog"
       aria-modal
@@ -46,7 +46,7 @@ export function PhotoLightbox({ photo, onClose }: PhotoLightboxProps) {
           ×
         </button>
 
-        <div className="relative w-full aspect-[4/3] max-h-[80vh] bg-rose-950/30 rounded-xl overflow-hidden">
+        <div className="relative w-full aspect-[4/3] max-h-[80vh] bg-rose-950 rounded-xl overflow-hidden">
           {isBlobOrApi ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img

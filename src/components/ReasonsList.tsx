@@ -40,7 +40,7 @@ export function ReasonsList({ reasons }: ReasonsListProps) {
           className="w-full text-center group focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-offset-2 rounded-2xl"
           aria-expanded={expanded}
         >
-          <h2 className="text-2xl font-semibold text-rose-900 dark:text-rose-100 mb-4 flex items-center justify-center gap-2 backdrop-blur-sm bg-[linear-gradient(rgba(255,255,255,0.95),rgba(255,255,255,0.9))] dark:bg-[linear-gradient(rgba(255,255,255,0.18),rgba(255,255,255,0.12))] p-4 rounded-lg">
+          <h2 className="text-2xl font-semibold text-rose-900 dark:text-rose-100 mb-4 flex items-center justify-center gap-2 bg-white dark:bg-rose-950 p-4 rounded-lg">
             <span
               className={`inline-block transition-transform duration-300 ${
                 expanded ? "rotate-180" : ""
@@ -57,7 +57,7 @@ export function ReasonsList({ reasons }: ReasonsListProps) {
               ❤️
             </span>
           </h2>
-          <p className="text-rose-600 dark:text-rose-300 text-sm backdrop-blur-sm bg-[linear-gradient(rgba(255,255,255,0.9),rgba(255,255,255,0.85))] dark:bg-[linear-gradient(rgba(255,255,255,0.2),rgba(255,255,255,0.15))] p-4 rounded-lg">
+          <p className="text-rose-600 dark:text-rose-300 text-sm bg-white dark:bg-rose-950 p-4 rounded-lg">
             {expanded ? "Click to collapse" : "Click to open"}
           </p>
         </button>
@@ -71,7 +71,7 @@ export function ReasonsList({ reasons }: ReasonsListProps) {
             {reasons.map((reason, i) => (
               <li
                 key={reason}
-                className="backdrop-blur-sm bg-[linear-gradient(rgba(255,255,255,0.9),rgba(255,255,255,0.85))] dark:bg-[linear-gradient(rgba(255,255,255,0.2),rgba(255,255,255,0.15))] p-4 rounded-xl border border-rose-200/50 dark:border-rose-700/40 animate-reason-reveal"
+                className="bg-white dark:bg-rose-950 p-4 rounded-xl border border-rose-200 dark:border-rose-800 animate-reason-reveal"
                 style={{
                   animationDelay: `${i * 80}ms`,
                   animationFillMode: "both",

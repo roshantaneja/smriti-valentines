@@ -23,13 +23,21 @@ export function Timeline({ events }: TimelineProps) {
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
 
+    // Fail open if IntersectionObserver is unavailable
+    if (!el || typeof IntersectionObserver === "undefined") {
+      const id = requestAnimationFrame(() => setVisible(true));
+      return () => cancelAnimationFrame(id);
+    }
+
+    // threshold 0 fires on any intersection (a tall section on a small
+    // screen may never reach a higher ratio), and the observer's initial
+    // callback also covers sections already in view on mount.
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) setVisible(true);
       },
-      { threshold: 0.1 }
+      { threshold: 0, rootMargin: "0px 0px -10% 0px" }
     );
 
     observer.observe(el);
@@ -45,7 +53,7 @@ export function Timeline({ events }: TimelineProps) {
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
     >
-      <div className="max-w-xl mx-auto backdrop-blur-md bg-[linear-gradient(rgba(255,255,255,0.95),rgba(255,255,255,0.9))] dark:bg-[linear-gradient(rgba(255,255,255,0.18),rgba(255,255,255,0.12))] rounded-2xl p-8 shadow-lg border border-rose-200/50 dark:border-rose-700/40">
+      <div className="max-w-xl mx-auto bg-white dark:bg-rose-950 rounded-2xl p-8 shadow-lg border border-rose-200 dark:border-rose-800">
         <h2 className="text-2xl font-semibold text-rose-900 dark:text-rose-100 mb-12 text-center">
           Our story
         </h2>

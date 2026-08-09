@@ -46,7 +46,7 @@ export function RateResult({ outcome, previewUrl, onReset }: RateResultProps) {
     <div className="space-y-5">
       {isPerfect && countUpDone && <ConfettiHearts />}
 
-      <div className="mx-auto w-32 h-32 rounded-xl overflow-hidden border border-rose-200/50 dark:border-rose-700/40 shadow-md">
+      <div className="mx-auto w-32 h-32 rounded-xl overflow-hidden border border-rose-200 dark:border-rose-800 shadow-md">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={previewUrl}
